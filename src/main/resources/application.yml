@@ -1,0 +1,51 @@
+# Server 설정
+server:
+  port: 8080              # 서버 포트 번호 지정
+  error:
+    whitelabel:
+      enabled: false      # Spring이 제공하는 기본 에러 페이지 끄기
+
+    # Error 메시지 포함 여부
+    include-exception: true               # 사용가능한 값 (true, false)
+    include-message: on_param             # 사용가능한 값 (always, never, on_param)
+    include-stacktrace: on_param          # 사용가능한 값 (always, never, on_param)
+    include-binding-errors: on_param      # 사용가능한 값 (always, never, on_param)
+
+# Spring 설정
+spring:
+  application:
+    name: wanted
+
+  # DB 섫정
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/wanted?serverTimezone=Asia/Seoul&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+
+    # Connection Pool 설정
+    hikari:
+      auto-commit: true
+      minimum-idle: 20
+      maximum-pool-size: 50
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        default_batch_fetch_size: 50
+        format_sql: true                                  # JPA SQL를 Logger로 출력
+        use_sql_comments: true
+        highlight_sql: true
+
+# logging 설정
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
